@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicine Shop</title>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <!--New-->
+    <link href="Content/style.css" rel="stylesheet" />
+    <script src="Scripts/custom.js"></script>
+
+    <!--New--> 
+
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <script src="Scripts/angular-messages.js"></script>
+    <script src="Scripts/angular-cookies.js"></script>
+
+    <script src="Scripts/app/app.js"></script>
+    <script src="Scripts/Controller/routeCtrl.js"></script>
+
+    <script src="Scripts/Factory/accSvc.js"></script>
+    <script src="Scripts/Controller/accCtrl.js"></script>
+
+    <script src="Scripts/Controller/omsCtrl.js"></script>
+    <script src="Scripts/Factory/omsSvc.js"></script>
+   
+    <!--<script src="Service/commonSvc.js"></script>
+    <script src="Controller/commonCtrl.js"></script>-->
+    <script src="Scripts/Controller/SlideCtrl.js"></script>
+    
+    <link href="Scripts/slideshow/higgidy_carousel.css" rel="stylesheet" />
+    <script src="Scripts/slideshow/higgidy_carousel.js"></script>
+
+    <script src="Scripts/dirPagination.js"></script>
+
+
+    
+
+</head>
+<body ng-controller="accCtrl" ng-init="initialize()">
+    <!--preloader-->
+    <div id="preloader">
+        <div class="preloader-area">
+            <div class="preloader-box">
+                <div class="preloader"></div>
+            </div>
+        </div>
+    </div>
+    <section class="header-top-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="header-top-content">
+                        <ul class="nav nav-pills navbar-left">
+                            <li><a href="#"><i class="pe-7s-call"></i><span>+8801849953860</span></a></li>
+                            <li><a href="#"><i class="pe-7s-mail"></i><span> info@m-mart.com</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="header-top-menu">
+                        <ul class="nav nav-pills navbar-right">
+                            <li ng-click="toSignInOrDashboard()" ng-show="hideSignInOptions"><a href="#">Admin</a></li>
+                            <li ng-click="toSignInOrDashboard()" ng-show="hideSignInOptions"><a href="#">Other</a></li>
+                            <li ng-hide="hideSignInOptions"><a id="btnSignIn" href="#" data-toggle="modal" data-target="#SignInModal" class="pe-7s-unlock">Sign In</a></li>
+                            <li ng-hide="hideSignInOptions"><a id="account" href="#" data-toggle="modal" data-target="#newAccModal">Create Account</a></li>
+                            <li ng-show="hideSignInOptions"><a id="lout" href="#" ng-click="logout()" class="pe-7s-lock">Log Out</a></li>
+                            <li><a href="#" class="pe-7s-mail">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  <header class="header-section">
+        <nav class="navbar navbar-fixed-top" style="top:100px">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header col-md-2">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><b>M-</b>mart</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse col-md-8" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Purchase</a></li>
+                    </ul>
+                    <!--................Search and Cart icon..............-->
+                    <ul class="nav navbar-nav navbar-right cart-menu">
+                        <li><a href="#" class="search-btn"><i class="fa fa-search-plus" style="font-size:30px;" aria-hidden="true">&nbsp;</i></a></li>
+                        <li><a href="#"><span> Cart -$0&nbsp;</span> <span class="shoping-cart">0</span></a></li>
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+
+            </div><!-- /.container -->
+        </nav>
+    </header>
+    <div class="container body-content">
+        <form name="form1" novalidate ng-controller="accCtrl">
+            <!---------------------------------- modal for Create Account ---------------------------------->
+            <div class="modal fade" tabindex="-1" id="newAccModal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Create New Account</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <!-------------------------- Name-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form1.Name.$invalid &&
+                                 form1.Name.$dirty}">
+                                    <label for="input2" class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input2" name="Name" ng-model="current.Name" placeholder="User Name" ng-maxlength="20" ng-minlength="3" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.Name.$error.required">User name is required</span>
+                                            <span ng-show="form1.Name.$error.minlength">User name is must be atleast 4 charecters in length</span>
+                                            <span ng-show="form1.Name.$error.maxlength">User name is can not exceed 20 charecters in length</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Email-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form1.Email.$invalid &&
+                                 form1.Email.$dirty}">
+                                    <label for="input3" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="input3" name="Email" ng-model="current.Email" placeholder="Email" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.Email.$error.required">Mail address is required</span>
+                                            <span ng-show="form1.Email.$error.email">Invalid email Address</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- User Password-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form1.uPassword.$invalid &&
+                                 form1.uPassword.$dirty}">
+                                    <label for="input4" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="input4" name="uPassword" ng-model="current.UserPassword" placeholder="Password" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.uPassword.$error.required">Password is required</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Role-------------------------------->
+                                <!--<div class="form-group" ng-class="{'has-error':form1.uRole.$invalid &&
+                                 form1.uRole.$dirty}">
+                                    <label for="input5" class="col-sm-2 control-label">User Role</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input5" name="uRole" ng-model="current.UserRole" placeholder="User Role" ng-maxlength="20" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.uRole.$error.required">User Role is required</span>
+                                            <span ng-show="form1.uRole.$error.maxlength">User Role can not exceed 20 charecters in length</span>
+                                        </span>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="signUpUser();" ng-disabled="form1.$invalid" data-dismiss="modal">Save</button>
+                            <!---->
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <!---------------------------------- End of modal for Create Account  ---------------------------------->
+        </form>
+        <form name="form2" novalidate ng-controller="accCtrl">
+            <!---------------------------------- modal for Sign In ---------------------------------->
+            <div class="modal fade" tabindex="-1" id="SignInModal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Sign In</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+
+
+                                <!-------------------------- Email-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form2.Email.$invalid &&
+                                  form2.Email.$dirty}">
+                                    <label for="input1" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="input1" name="Email" ng-model="logn.Email" placeholder="Email" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form2.Email.$error.required">Mail address is required</span>
+                                            <span ng-show="form2.Email.$error.email">Invalid email Address</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-------------------------- User Password-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form2.uPasswordSign.$invalid &&
+                                 form2.uPasswordSign.$dirty}">
+                                    <label for="input2" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="input2" name="uPasswordSign" ng-model="logn.UserPassword" placeholder="Password" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form2.uPasswordSign.$error.required">Password is required</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style="color:red">
+                                    {{message}}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-primary" ng-click="login()" ng-disabled="form2.$invalid">Log In</button>
+
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <!---------------------------------- End of modal for Create Account  ---------------------------------->
+        </form>
+        <hr />
+        <!--For Viewing Product-->
+        
+        <div ng-view>
+
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; <b>GroupA</b> Round 28 DITD 2016</p>
+        </footer>
+
+    </div>
+    <!--</form>-->
+    
+</body>
+</html>
+
+

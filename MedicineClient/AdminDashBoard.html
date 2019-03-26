@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Online Medicine Shop
+    </title>
+   <!--New-->
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/style.css" rel="stylesheet" />
+    <link href="Content/pe-icon-7-stroke.css" rel="stylesheet" />
+</head>
+<body>
+    <section class="header-top-section navbar-default">
+        <div class="container">
+            <div class="row">
+                <div class="header-top-menu">
+                    <ul class="nav nav-pills">
+                        <li><a href="/"><span class="pe-7s-home" style="font-size:20px;"></span></a></li>
+                        <li><a href="#">Admin</a></li>
+                        <li><a href="#/com">Company</a></li>
+                        <li><a href="#/gen">Generic Name</a></li>
+                        <li><a href="#/dof">Dosage Format</a></li>
+                        <li><a href="#/pur">Purchase</a></li>
+                        <li><a href="#/sto">Stock</a></li>
+                        <li><a href="#/ordr">Order</a></li>
+                        <li><a href="#/odtls">Order Details</a></li>
+                        <li><a href="#/sldtls">Sales Details</a></li>
+                        <li><a href="#/pStore">Product Store</a></li>
+                    </ul>
+                </div>
+               
+                    
+            </div>
+        </div>
+    </section>
+        
+
+
+    <form name="form1">
+        
+        <div class="container body-content">
+            <div ng-view></div>
+            <hr />
+            <footer>
+                <p>&copy; <b>GroupB</b> Round 34 </p>
+            </footer>
+        </div>
+    </form>
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <script src="Scripts/angular-messages.js"></script>
+    <script src="Scripts/angular-cookies.js"></script>
+
+
+    <script src="Scripts/app/app.js"></script>
+    <script src="Scripts/Controller/routeCtrl.js"></script>
+
+    <script src="Scripts/Factory/accSvc.js"></script>
+    <script src="Scripts/Factory/omsSvc.js"></script>
+
+    <script src="Scripts/Controller/accCtrl.js"></script>
+    <script src="Scripts/Controller/omsCtrl.js"></script>
+
+    <script src="Scripts/Controller/SlideCtrl.js"></script>
+
+    <script src="Scripts/slideshow/higgidy_carousel.js"></script>
+    <link href="Scripts/slideshow/higgidy_carousel.css" rel="stylesheet" />
+
+    <script src="Scripts/dirPagination.js"></script>
+</body>
+</html>
+
+

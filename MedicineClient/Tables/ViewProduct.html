@@ -1,0 +1,64 @@
+﻿<form name="form1">
+    <div class="container" ng-init="showProduct();">
+        <p>
+            <strong>Search By Any:</strong>
+            <input type="text" id="txtAny" ng-model="searchAny" placeholder="Search by any field" />
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="cursor:pointer" ng-click="predicate='ProductId';reverse=!reverse">Product Id</th>
+                    <!--<th style="cursor:pointer" ng-click="predicate='ProductName';reverse=!reverse">Product Name</th>
+                    <th style="cursor:pointer" ng-click="predicate='ProductPhoto';reverse=!reverse">Product Photo</th>
+                    <th style="cursor:pointer" ng-click="predicate='PurchaseDate';reverse=!reverse">Purchase Date</th>
+                    <th style="cursor:pointer" ng-click="predicate='ReorderLevel';reverse=!reverse">Reorder Level</th>
+                    <th style="cursor:pointer" ng-click="predicate='MedicineUnit';reverse=!reverse">Medicine Unit</th>
+                    <th style="cursor:pointer" ng-click="predicate='PiecePerStrip';reverse=!reverse">Piece Per Strip</th>
+                    <th style="cursor:pointer" ng-click="predicate='ProductDescription';reverse=!reverse">Product Description</th>
+                    <th style="cursor:pointer" ng-click="predicate='StripOrVialPerBox';reverse=!reverse">Strip Or Vial Per Box</th>
+                    <th style="cursor:pointer" ng-click="predicate='CompanyName';reverse=!reverse">Company Name</th>
+                    <th style="cursor:pointer" ng-click="predicate='GenericName';reverse=!reverse">Generic Name</th>
+                    <th style="cursor:pointer" ng-click="predicate='DosageFormatName';reverse=!reverse">Dosage Format</th>
+                    <th style="cursor:pointer" ng-click="predicate='';reverse=!reverse">...</th>-->
+                </tr>
+            </thead>
+            <tbody dir-paginate="vwprd in productView|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+                <tr>
+                    <td>{{vwprd.ProductId}}</td>
+                    <!--<td>{{vwprd.ProductName}}</td>
+                    <td>{{vwprd.ProductPhoto}}</td>
+                    <td>{{vwprd.PurchaseDate}}</td>
+                    <td>{{vwprd.ReorderLevel}}</td>
+                    <td>{{vwprd.MedicineUnit}}</td>
+                    <td>{{vwprd.PiecePerStrip}}</td>
+                    <td>{{vwprd.ProductDescription}}</td>
+                    <td>{{vwprd.StripOrVialPerBox}}</td>
+                    <td>{{vwprd.CompanyName}}</td>
+                    <td>{{vwprd.GenericName}}</td>
+                    <td>{{vwprd.DosageFormatName}}</td>-->
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+</form>

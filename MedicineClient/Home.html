@@ -1,0 +1,318 @@
+﻿<!--<div ng-app="app" ng-controller="SlideCtrl">
+    <div higgidy-carousel='images' timeout="10000">
+        <ul higgidy-carousel-images>
+            <li ng-repeat="image in images">
+                <a href="{{image.link}}">
+                    <img ng-src="{{image.src}}" alt="{{img.alt}}" width="100px" />
+                </a>
+            </li>
+        </ul>
+        <nav class="links">
+            <ul>
+                <li ng-repeat="image in images">
+                    <a href="" ng-click="show($index)" ng-class="{selected: carousel.current == $index}">
+                        {{$index}}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>-->
+
+<div class="container" ng-init="showProduct();">
+
+    <!--Table-->
+    <div ng-hide="togl" style="display: table;width: 100%;">
+        <!--.......................Products................-->
+        
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="titie-section wow fadeInDown animated ">
+                            <h1>Medicine Products</h1>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        
+        <!--Table Row-->
+        <div style="display: table-row;">
+            <!--Table Header-->
+            <div style="display: table-header-group;float:right">
+                <ul class="nav navbar-nav cart-menu navbar-right">
+                    <li><a href=""><input type="checkbox" ng-model="togl" /><span style="font-size:17px;">Go To Cart -{{TotalPrice|currency:'৳'}}&nbsp;</span><span class="shoping-cart">{{TotalQuantity}}</span></a></li>
+
+                </ul>
+            </div>
+           
+
+        </div>
+       
+        <div style="display: table-row;">
+          
+
+            <div class="row">
+                <div class="wow fadeInLeft animated" data-wow-delay="0.2s">
+                    <div class="col-md-3 col-sm-6 col-xs-12 cat-3 featured-items isotope-item" dir-paginate="product in productView|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:8">
+                        <div class="product-item">
+                            <img id="picUpdates" ng-src="data:image/png;base64,{{product.ProductPhoto}}" alt="" class="img-responsive" width="255" height="322" />
+
+                            <div class="product-hover">
+                                <div class="product-meta">
+
+                                    <a href="" data-toggle="modal" data-target="#productDetailesModal" ng-click="searchPv();">
+                                        <i class="pe-7s-stopwatch"></i>
+                                    </a>
+
+                                    <a href="" ng-click="insertCart(product)"><i class="pe-7s-cart"></i>Add to Cart</a>
+                                </div>
+                            </div>
+                            <div class="product-title">
+                                
+                                    <h3>{{product.ProductName}}</h3>
+                                    <span>{{product.SalePrice | currency:'৳'}}</span>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+
+        </div>
+
+        
+        <div style="display: table-row;">
+           
+            <div style="display: table-header-group;float:right">
+                <ul class="nav navbar-nav cart-menu navbar-right">
+                    <li><a href=""><input type="checkbox" ng-model="togl" /><span>Go To Cart -{{TotalPrice|currency:'৳'}}&nbsp;</span><span class="shoping-cart">{{TotalQuantity}}</span></a></li>
+
+                </ul>
+            </div>
+           
+
+        </div>
+        <div style="display: table-header-group;float:right">
+            <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        </div>
+       
+
+    </div>
+   
+
+    <div class="container-fluid" ng-show="togl">
+        <div class="text-center" id="shoppingCart"><h3 style="font-family:Arial;font-weight:900"><b>This is Your Cart</b></h3></div>
+        <div class="row-fluid">
+            <div class="span8">
+                <!-- items -->
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="well">
+                            <td class="tdRight" colspan="6">
+                                <input type="checkbox" ng-model="togl">
+                                <b style="font-size:20px;">Back To Store</b>
+                                <div class="pull-right"><b>{{TotalQuantity}}</b> items, <b>{{TotalPrice|currency:'৳'}}</b></div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Product Id </th>
+                            <th>Product Name</th>
+                            <th>Sale Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            <th>...</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="s1 in cartItems">
+                        <tr>
+                            <!--ng-click="edit(s)"-->
+                            <td>{{s1.ProductId}}</td>
+                            <td>{{s1.ProductName}}</td>
+                            <td>
+                                <button class="btn btn-danger" type="button" ng-disabled="s1.SaleQuantity<= 1" ng-click="Decrement(s1)">-</button>
+                                <button class="btn btn-inverse" type="button">{{s1.SaleQuantity}}</button>
+
+                                <button class="btn btn-success" type="button" ng-disabled="s1.SaleQuantity>=1000" ng-click="insertCart(s1)">+</button>
+
+                            </td>
+                            <td>{{s1.SalePrice|currency:'৳'}}</td>
+                            <td>{{s1.mSalePrice|currency:'৳'}}</td>
+                            <td><button class="btn btn-danger" ng-click="removeCart(s1)">X</button>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="tdRight">Items</td>
+                            <td>{{TotalQuantity}}</td>
+                            <td class="tdRight">Grand Total</td>
+                            <td>{{TotalPrice|currency:'৳'}}</td>
+                            <td>
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#orderModal" ng-disabled="TotalPrice<299" title="You have to buy   more than  ৳-300" onmouseenter="$(this).tooltip('show')">CheckOut</button><br />
+                                <button type="button" class="btn btn-danger btn-sm" ng-click="clearCart()" ng-disabled="">Clear Cart</button>
+                            </td>
+
+                        </tr>
+
+                    </tfoot>
+                </table>
+                <div class="pull-right">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!---------------------------------------------------Modal---------------------------------------------------------->
+
+    <form name="form1"><div class="modal fade" tabindex="-1" id="orderModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Give Us Your Information</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <!-------------------------- Name(Add)  ------------------------->
+                    <div class="form-group">
+                        <label for="input1" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="input1" name="CustomerName" ng-model="order.CustomerName" placeholder="Customer Name" required>
+                            <div ng-show="form1.$submitted || form1.CustomerName.$invalid">
+                                <div ng-show="form1.CustomerName.$error.required">
+                                    Name is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------- Address(Add)  ------------------------->
+                    <div class="form-group">
+                        <label for="input2" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="input2" name="CustomerAddress" ng-model="order.CustomerAddress" placeholder="Customer Address" required>
+                            <div ng-show="form1.$submitted || form1.CustomerAddress.$invalid">
+                                <div ng-show="form1.CustomerAddress.$error.required">
+                                    Address is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-------------------------- Phone(Add)  ------------------------->
+                    <div class="form-group">
+                        <label for="input3" class="col-sm-2 control-label">Phone</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="input3" name="CustomerPhone" ng-model="order.CustomerPhone" placeholder="Customer Phone" required>
+                            <div ng-show="form1.$submitted || form1.CustomerPhone.$invalid">
+                                <div ng-show="form1.CustomerPhone.$error.required">
+                                    Phone is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------- Email(Add)  ------------------------->
+                    <div class="form-group" ng-class="{'has-error':form1.CompanyName.$invalid &&
+                                 form1.CompanyName.$dirty}">
+                        <label for="input4" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="input4" name="CustomerEmail" ng-model="order.CustomerEmail" placeholder="Customer Email" ng-maxlength="30" ng-minlength="7" required>
+                            <span class="help-block has-error">
+                                <span ng-show="form1.CustomerEmail.$error.required">Please Type Email  </span>
+                                <span ng-show="form1.CustomerEmail.$error.minlength">Email name is must be atleast 7 charecters in length</span>
+                                <span ng-show="form1.CustomerEmail.$error.maxlength">Email name is can not exceed 30 charecters in length</span>
+                            </span>
+                        </div>
+                    </div>
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger glyphicon glyphicon-trash" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success glyphicon glyphicon-save" ng-click="saveOrderDetail();clearCart();">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div></form>
+
+    <!-----------------Modal For Single Product------------------------>
+
+    <div class="modal fade" tabindex="-1" id="productDetailesModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#1abc9c;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="background-color:red;font-size:50px"><span aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title" style="text-align:center;color:white;font-weight:900">Product Information</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div>
+
+
+                            <form>
+                                <table class="table fa-border">
+                                    <tr>
+                                        <td>Product Id</td>
+                                        <td>{{productv.ProductId}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BoxPrice</td>
+                                        <td>{{productv.BoxPrice--productv.BoxPrice*productv.Comission}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>StripOrVialPerBox</td>
+                                        <td>{{productv.StripOrVialPerBox}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SalePrice</td>
+                                        <td>{{productv.SalePrice}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Company Name</td>
+                                        <td>{{productv.CompanyName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DosageFormat Name</td>
+                                        <td>{{productv.DosageFormatName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Product Name</td>
+                                        <td>{{productv.ProductName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Generic Name</td>
+                                        <td>{{productv.GenericName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Medicine Unit</td>
+                                        <td>{{productv.MedicineUnit}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ProductDescription</td>
+                                        <td>{{productv.ProductDescription}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PiecePerStrip</td>
+                                        <td>{{productv.PiecePerStrip}}</td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-danger" data-dismiss="modal">Close</button>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+</div>
+

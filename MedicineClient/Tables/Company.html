@@ -1,0 +1,107 @@
+﻿<form name="form1" style="background-color:#faf9f9;">
+    <div class="container" ng-init="getallCompany();">
+        <br />
+
+        <div class="text-center">
+            <button type="button" class="btn btn-group-sm" data-toggle="modal" data-target="#myModal">
+                Add new Company
+            </button>
+        </div>
+        <br />
+        <br />
+        <div class="text-center">
+
+            <strong class="glyphicon glyphicon-search"style="font-size:30px;">: </strong>
+            <input type="text" id="txtAny" ng-model="searchAny" placeholder="Search by any field" style="background-color:#0abda1;font-size:25px;" />
+        </div>
+        <div style="margin:20px 200px 0px 200px;">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr style="background-color:#19fca9;color:white;">
+                        <th style="cursor:pointer;font-size:18px" ; ng-click=" predicate='CompanyId' ;reverse=!reverse">Company Id</th>
+                        <th style="cursor:pointer;font-size:18px" ng-click=" predicate='CompanyName' ;reverse=!reverse">Company Name</th>
+                        <th>...</th>
+                    </tr>
+                </thead>
+                <tbody dir-paginate="com in companies|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+                    <tr>
+                        <td class="col-md-2">{{com.CompanyId}}</td>
+                        <td class="col-md-7">{{com.CompanyName}}</td>
+                        <td class="col-md-3">
+                            <button type="button" class="btn btn-warning glyphicon glyphicon-edit" data-toggle="modal" ng-click="searchCompany();" data-target="#myModalEdit">Edit</button>
+                            <button type="button" class="btn btn-danger glyphicon glyphicon-trash" ng-click="deleteCompany();">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <div class="text-center">
+            <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        </div>
+        <!--Use of Modal(Pop up Dialogue box) for Add New Data-->
+        <!---------------------------------- modal for Add ---------------------------------->
+        <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Save Company Information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <!-------------------------- Name(Add)  ------------------------->
+                            <div class="form-group" ng-class="{'has-error':form1.CompanyName.$invalid &&
+                                 form1.CompanyName.$dirty}">
+                                <label for="input2" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input2" name="CompanyName" ng-model="company.CompanyName" placeholder="Company Name" ng-maxlength="20" ng-minlength="2" required>
+
+                                    <span class="help-block has-error">
+                                        <span ng-show="form1.CompanyName.$error.required">Please Type Company Name </span>
+                                        <span ng-show="form1.CompanyName.$error.minlength">Company name is must be atleast 2 charecters in length</span>
+                                        <span ng-show="form1.CompanyName.$error.maxlength">Company name is can not exceed 20 charecters in length</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger glyphicon glyphicon-trash" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success glyphicon glyphicon-save" ng-click="saveCompany();" ng-disabled="form1.$invalid">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+        <!--Modal for edit-->
+        <!---------------------------------- modal for edit ---------------------------------->
+        <div class="modal fade" tabindex="-1" id="myModalEdit" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="form-horizontal">
+                            <!-------------------------- Name(Edit)  ------------------------->
+                            <div class="form-group">
+                                <label for="input2" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input2" ng-model="company.CompanyName" placeholder="Company Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success glyphicon glyphicon-upload" data-dismiss="modal" ng-click="updateCompany();">Update</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    
+    </div>
+</form>

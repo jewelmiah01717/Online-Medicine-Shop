@@ -1,0 +1,442 @@
+﻿<form name="form1">
+    <div ng-init="showProduct();">
+        <br />
+
+        <div class="text-center">
+            <button type="button" class="btn btn-group-sm" data-toggle="modal" data-target="#myModal">
+                Purchase New Product
+            </button>
+        </div>
+        <br />
+        <br />
+        <div class="text-center">
+
+            <strong class="glyphicon glyphicon-search" style="font-size:30px;">: </strong>
+            <input type="text" id="txtAny" ng-model="searchAny" placeholder="Search by any field" style="background-color:#0abda1;font-size:25px;" />
+        </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <!--<th style="cursor:pointer" ng-click="predicate='PurchaseId';reverse=!reverse">Purchase Id</th>-->
+                        <th style="cursor:pointer" ng-click="predicate='PurchaseDate';reverse=!reverse">Date</th>
+                        <th style="cursor:pointer" ng-click="predicate='ProductPhoto';reverse=!reverse">Photo</th>
+                        <th style="cursor:pointer" ng-click="predicate='ProductId';reverse=!reverse">Product Id</th>
+                        <th style="cursor:pointer" ng-click="predicate='PurchaseQuantity';reverse=!reverse">Quantity</th>
+                        <th style="cursor:pointer" ng-click="predicate='ReorderLevel';reverse=!reverse">Reorder Level</th>
+                        <th style="cursor:pointer" ng-click="predicate='BoxPrice';reverse=!reverse">Box Price</th>
+                        <th style="cursor:pointer" ng-click="predicate='StripOrVialPerBox';reverse=!reverse">Strip Or Vial Per Box</th>
+                        <th style="cursor:pointer" ng-click="predicate='UnitPrice';reverse=!reverse">Unit Price</th>
+                        <th style="cursor:pointer" ng-click="predicate='Comission';reverse=!reverse">Comission</th>
+                        <th style="cursor:pointer" ng-click="predicate='SalePrice';reverse=!reverse">Sale Price</th>
+                        <th style="cursor:pointer" ng-click="predicate='CompanyName';reverse=!reverse">Company Name</th>
+                        <th style="cursor:pointer" ng-click="predicate='DosageFormatName';reverse=!reverse">Dosage From</th>
+                        <th style="cursor:pointer" ng-click="predicate='ProductName';reverse=!reverse">Name</th>
+                        <th style="cursor:pointer" ng-click="predicate='GenericName';reverse=!reverse">Generic Name</th>
+                        <th style="cursor:pointer" ng-click="predicate='MedicineUnit';reverse=!reverse">Medicine Unit</th>
+                        <th style="cursor:pointer" ng-click="predicate='ProductDescription';reverse=!reverse">Description</th>
+                        <th style="cursor:pointer" ng-click="predicate='PiecePerStrip';reverse=!reverse">Piece Per Strip</th>
+                        <th style="cursor:pointer" ng-click="predicate='';reverse=!reverse">...</th>
+                    </tr>
+                </thead>
+                <tbody dir-paginate="pur in productView|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+                    <tr>
+                        <!--<td>{{pur.PurchaseId}}</td>-->
+                        <td>{{pur.PurchaseDate|date:'dd/MM/yyyy'}}</td>
+                        <td><img i
+                        <td><img id="picUpdates" ng-src="data:image/png;base64,{{pur.ProductPhoto}}" alt="" width="50" height="50" style="margin-left:10px;" /></td>
+                        <td>{{pur.ProductId}}</td>
+                        <td>{{pur.PurchaseQuantity}}</td>
+                        <td>{{pur.ReorderLevel}}</td>
+                        <td>{{pur.BoxPrice}}</td>
+                        <td>{{pur.StripOrVialPerBox}}</td>
+                        <td>{{pur.UnitPrice}}</td>
+                        <td>{{pur.Comission}}</td>
+                        <td>{{pur.SalePrice}}</td>
+                        <td>{{pur.CompanyName}}</td>
+                        <td>{{pur.DosageFormatName}}</td>
+                        <td>{{pur.ProductName}}</td>
+                        <td>{{pur.GenericName}}</td>
+                        <td>{{pur.MedicineUnit}}</td>
+                        <td>{{pur.ProductDescription}}</td>
+                        <td>{{pur.PiecePerStrip}}</td>
+                        <td>
+                            <button type="button" class="btn btn-success glyphicon glyphicon-edit " data-toggle="modal" ng-click="searchPurchaseGrid();" data-target="#myModalEdit">Edit</button>
+                            <button type="button" class="btn btn-danger glyphicon glyphicon-trash" ng-click="deletePurchase();">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                </tfoot>
+            </table>
+            <div class="text-center">
+                <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+            </div>
+            <!-------------------------------------------------------------------Add Modal------------------------------------------------------>
+            <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Product Information</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+
+                                <!-------------------------- Photo(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="imginp" class="col-sm-2 control-label">Photo</label>
+                                    <div class="col-sm-10">
+                                        <img id="pic" ng-src="data:image/png;base64,{{purchase.ProductPhoto}}" alt="" width="150" height="150" style="margin-left:200px;" />
+                                        <input type="file" class="form-control" id="imginp" onchange="readURL(this,'pic');" name="pProductPhoto" ng-model="purchase.ProductPhoto">
+                                    </div>
+                                </div>
+                                <!-------------------------- ProdutId(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input4" class="col-sm-2 control-label">Product Id</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input4" name="pProductId" ng-model="purchase.ProductId" placeholder="Product Id" ng-minlength="2" ng-keyup="searchPurchase();" required>
+                                        <div ng-messages="form1.pProductId.$error" ng-if="form1.pProductId.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Product Id
+                                            </p>
+                                            <p ng-message="minlength">
+                                                Product Id is not valid
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------------- Quantity(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input3" class="col-sm-2 control-label">Quantity</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input3" name="pQuantity" ng-model="purchase.PurchaseQuantity" placeholder="Quantity" ng-minlength="2" required>
+                                        <div ng-messages="form1.pQuantity.$error" ng-if="form1.pQuantity.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Quantity
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------------- Reorder Level(Add)  ------------------------->
+
+                                <div class="form-group">
+                                    <label for="input13" class="col-sm-2 control-label">Reorder Level</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input13" name="pReorderLevel" ng-model="purchase.ReorderLevel" placeholder="Reorder Level" ng-minlength="2" required>
+                                        <div ng-messages="form1.pReorderLevel.$error" ng-if="form1.pReorderLevel.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Reorder Level
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Box Price(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input88" class="col-sm-2 control-label">Box Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input88" name="pBoxPrice" ng-model="purchase.BoxPrice" placeholder="Box Price" ng-minlength="2" required>
+                                        <div ng-messages="form1.pBoxPrice.$error" ng-if="form1.pBoxPrice.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Box Price
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------------- Strip Or Vial Per Box(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input7" class="col-sm-2 control-label">Strip/Vial Per Box</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input7" name="pStripOrVialPerBox" ng-model="purchase.StripOrVialPerBox" placeholder="Strip Or Vial Per Box"
+                                               ng-keyup="purchase.UnitPrice=purchase.BoxPrice/purchase.StripOrVialPerBox"
+                                               ng-minlength="1" required>
+                                        <div ng-messages="form1.pStripOrVialPerBox.$error" ng-if="form1.pStripOrVialPerBox.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Strip Or Vial Per Box
+                                            </p>
+                                            <!--<p ng-message="minlength">
+                                                Name is Too Short
+                                            </p>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------------- Unit Price(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input08" class="col-sm-2 control-label">Unit Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input08" name="pUnitPrice" ng-model="purchase.UnitPrice" placeholder="Unit Price" ng-minlength="2" readonly>
+                                        <div ng-messages="form1.pUnitPrice.$error" ng-if="form1.pUnitPrice.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Unit Price
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------------- Comission(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input9" class="col-sm-2 control-label">Comission</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input9" name="pComission"
+                                               ng-keyup="purchase.SalePrice=purchase.UnitPrice--(purchase.UnitPrice*purchase.Comission)" ng-model="purchase.Comission" placeholder="Comission" ng-minlength="2" required>
+                                        <div ng-messages="form1.pComission.$error" ng-if="form1.pComission.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Comission
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Sale Price(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input20" class="col-sm-2 control-label">Sale Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input20" name="pSalePrice" ng-model="purchase.SalePrice" placeholder="Sale Price" readonly>
+                                    </div>
+                                </div>
+                                <!-------------------------- Company Name(Add)  ------------------------->
+                                <div class="form-group" ng-init="getallCompany();">
+                                    <label for="input15" class="col-sm-2 control-label">Company Name</label>
+                                    <div class="col-sm-10">
+                                        <select ng-model="purchase.CompanyId">
+                                            <option label="Please Select"></option>
+                                            <option ng-repeat="com in companies" value="{{com.CompanyId}}" ng-selected="{{com.Selected==true}}">{{com.CompanyName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!-------------------------- Dosage Format(Add)  ------------------------->
+                                <div class="form-group" ng-init="getallDosageFormat();">
+                                    <label for="input14" class="col-sm-2 control-label">Dosage Form</label>
+                                    <div class="col-sm-10">
+                                        <select ng-model="purchase.DosageFormatId">
+                                            <option label="Please Select"></option>
+                                            <option ng-repeat="dof in dosageFormats" value="{{dof.DosageFormatId}}" ng-selected="{{dof.Selected==true}}">{{dof.DosageFormatName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!-------------------------- Name(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input16" class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input16" name="pProductName" ng-model="purchase.ProductName" placeholder="Product Name" ng-minlength="2" required>
+                                        <div ng-messages="form1.pProductName.$error" ng-if="form1.pProductName.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Product Description
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-------------------------- Generic Name(Add)  ------------------------->
+                                <div class="form-group" ng-init="getallGenericName();">
+                                    <label for="input14" class="col-sm-2 control-label">Generic Name</label>
+                                    <div class="col-sm-10">
+                                        <select ng-model="purchase.GenericId">
+                                            <option label="Please Select"></option>
+                                            <option ng-repeat="gen in genericNames" value="{{gen.GenericId}}" ng-selected="{{gen.Selected==true}}">{{gen.GenericName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!-------------------------- Medicine Unit(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input11" class="col-sm-2 control-label">Medicine Unit</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input11" name="pMedicineUnit" ng-model="purchase.MedicineUnit" placeholder="Medicine Unit" ng-minlength="2" required>
+                                        <div ng-messages="form1.pMedicineUnit.$error" ng-if="form1.pMedicineUnit.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Medicine Unit
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Description(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input6" class="col-sm-2 control-label">Description</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input6" name="pProductDescription" ng-model="purchase.ProductDescription" placeholder="Description" ng-minlength="2" required>
+                                        <div ng-messages="form1.pProductDescription.$error" ng-if="form1.pProductDescription.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Product Description
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Piece Per Strip(Add)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input8" class="col-sm-2 control-label">Piece Per Strip</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input8" name="pPiecePerStrip" ng-model="purchase.PiecePerStrip" placeholder="Piece Per Strip" ng-minlength="2" required>
+                                        <div ng-messages="form1.pPiecePerStrip.$error" ng-if="form1.pPiecePerStrip.$invalid">
+                                            <p ng-message="required">
+                                                Please Type Piece Per Strip
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger glyphicon glyphicon-trash" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-success glyphicon glyphicon-save" ng-click="savePurchase();">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <!-------------------------------------------------------------------Update Modal------------------------------------------------------>
+
+            <div class="modal fade" tabindex="-1" id="myModalEdit" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Update Purchase Information</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <!-------------------------- Photo(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="imginp" class="col-sm-2 control-label">Photo</label>
+                                    <div class="col-sm-10">
+                                        <img id="picUpdate" ng-src="data:image/png;base64,{{purchase.ProductPhoto}}" alt="" width="150" height="150" style="margin-left:200px;" />
+                                        <input type="file" class="form-control" onchange="readURL(this, 'picUpdate');" name="pProductPhoto" ng-model="purchase.ProductPhoto">
+                                    </div>
+                                </div>
+                                <!-------------------------- ProdutId(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input4" class="col-sm-2 control-label">Product Id</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input4" name="pProductId" ng-model="purchase.ProductId" placeholder="Product Id" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Quantity(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input3" class="col-sm-2 control-label">Quantity</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input3" name="pQuantity" ng-model="purchase.PurchaseQuantity" placeholder="Quantity" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Reorder Level(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input13" class="col-sm-2 control-label">Reorder Level</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input13" name="pReorderLevel" ng-model="purchase.ReorderLevel" placeholder="Reorder Level" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Box Price(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input88" class="col-sm-2 control-label">Box Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input88" name="pBoxPrice" ng-model="purchase.BoxPrice" placeholder="Box Price" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Strip Or Vial Per Box(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input7" class="col-sm-2 control-label">Strip/Vial Per Box</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input7" name="pStripOrVialPerBox" ng-model="purchase.StripOrVialPerBox" placeholder="Strip Or Vial Per Box" ng-minlength="2"
+                                               ng-keyup="purchase.UnitPrice=purchase.BoxPrice/purchase.StripOrVialPerBox" required>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Unit Price(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input9" class="col-sm-2 control-label">Unit Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input9" name="pUnitPrice" ng-model="purchase.UnitPrice" placeholder="Unit Price" ng-minlength="2" readonly>
+                                    </div>
+                                </div>
+                                <!-------------------------- Comission(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input21" class="col-sm-2 control-label">Comission</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input21" name="pComission" ng-model="purchase.Comission" ng-keyup="purchase.SalePrice=purchase.UnitPrice--(purchase.UnitPrice*purchase.Comission)" placeholder="Comission" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Sale Price(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input20" class="col-sm-2 control-label">Sale Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input20" name="pSalePrice" ng-model="purchase.SalePrice" placeholder="Sale Price" ng-minlength="2" readonly>
+                                    </div>
+                                </div>
+                                <!-------------------------- Company Name(Update)  ------------------------->
+                                <div class="form-group" ng-init="getallCompany();">
+                                    <label for="input15" class="col-sm-2 control-label">Company Name</label>
+                                    <div class="col-sm-10">
+                                        <select ng-model="purchase.CompanyId">
+                                            <option label="Please Select"></option>
+                                            <option ng-repeat="com in companies" value="{{com.CompanyId}}" ng-selected="{{com.Selected==true}}">{{com.CompanyName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!-------------------------- Dosage Format(Update)  ------------------------->
+                                <div class="form-group" ng-init="getallDosageFormat();">
+                                    <label for="input14" class="col-sm-2 control-label">Dosage Form</label>
+                                    <div class="col-sm-10">
+                                        <select ng-model="purchase.DosageFormatId">
+                                            <option label="Please Select"></option>
+                                            <option ng-repeat="dof in dosageFormats" value="{{dof.DosageFormatId}}" ng-selected="{{dof.Selected==true}}">{{dof.DosageFormatName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!-------------------------- Name(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input16" class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input16" name="pProductName" ng-model="purchase.ProductName" placeholder="Product Name" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Generic Name(Update)  ------------------------->
+                                <div class="form-group" ng-init="getallGenericName();">
+                                    <label for="input14" class="col-sm-2 control-label">Generic Name</label>
+                                    <div class="col-sm-10">
+                                        <select ng-model="purchase.GenericId">
+                                            <option label="Please Select"></option>
+                                            <option ng-repeat="gen in genericNames" value="{{gen.GenericId}}" ng-selected="{{gen.Selected==true}}">{{gen.GenericName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <!-------------------------- Medicine Unit(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input11" class="col-sm-2 control-label">Medicine Unit</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input11" name="pMedicineUnit" ng-model="purchase.MedicineUnit" placeholder="Medicine Unit" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Description(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input6" class="col-sm-2 control-label">Description</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input6" name="pProductDescription" ng-model="purchase.ProductDescription" placeholder="Description" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                                <!-------------------------- Piece Per Strip(Update)  ------------------------->
+                                <div class="form-group">
+                                    <label for="input8" class="col-sm-2 control-label">Piece Per Strip</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input8" name="pPiecePerStrip" ng-model="purchase.PiecePerStrip" placeholder="Piece Per Strip" ng-minlength="2" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger glyphicon glyphicon-trash" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success glyphicon glyphicon-upload" data-dismiss="modal" ng-click="updatePurchase();">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    <!--</div>
+    </div>-->
+</form>

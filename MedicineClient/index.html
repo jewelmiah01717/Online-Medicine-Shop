@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicine Shop</title>
+    <link rel="icon" href="images/Icon.png" />
+    <!--.................Design css...........-->
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/font-awesome.css" rel="stylesheet" />
+    <link href="Content/pe-icon-7-stroke.css" rel="stylesheet" />
+    <link href="Content/animate.css" rel="stylesheet" />
+    <link href="Content/slick.css" rel="stylesheet" />
+    <link href="Content/style.css" rel="stylesheet" />
+
+</head>
+<body ng-controller="accCtrl" ng-init="initialize();showProduct();">
+    <!--preloader-->
+    <div id="preloader">
+        <div class="preloader-area">
+            <div class="preloader-box">
+                <div class="preloader"></div>
+            </div>
+        </div>
+    </div>
+   
+        <section class="header-top-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="header-top-content">
+                            <ul class="nav nav-pills navbar-left">
+                                <li><a href="#"><i class="pe-7s-home" style="font-size:20px"></i></a></li>
+                                <li><a href="#"><i class="pe-7s-call"></i><span>+8801681399787</span></a></li>
+                                <li><a href="#"><i class="pe-7s-mail"></i><span> info@m-mart.com</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="header-top-menu">
+                            <ul class="nav nav-pills navbar-right">
+                                <li ng-click="toSignInOrDashboard()" ng-show="hideSignInOptions"><a href="#">Admin</a></li>
+                                <li ng-click="toSignInOrDashboard()" ng-show="hideSignInOptions"><a href="#">Other</a></li>
+                                <li ng-hide="hideSignInOptions"><a id="btnSignIn" href="#" data-toggle="modal" data-target="#SignInModal" class="pe-7s-unlock">Sign In</a></li>
+                                <li ng-hide="hideSignInOptions"><a id="account" href="#" data-toggle="modal" data-target="#newAccModal">Create Account</a></li>
+                                <li ng-show="hideSignInOptions"><a id="lout" href="#" ng-click="logout()" class="pe-7s-lock">Log Out</a></li>
+                                <li><a href="#jalalNur">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <br />
+        <header class="header-section">
+            <nav class="navbar navbar-default">
+                <div class="container col-md-12">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header col-md-3">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"><b>M-</b>mart</a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse col-md-4" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#blog">Blog</a></li>
+                            <li><a href="#">Purchase</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                           
+                            <input type="text" name="" id="txtAny" ng-model="searchAny" placeholder="Search by any field" class="form-control" size="50">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-search" style="cursor:pointer;"></span>
+                            </span>
+                        </div>
+                        <!-- /.navbar-collapse -->
+
+
+                    </div>
+                    <!--<div class="col-md" style="display: table-row;">
+                       
+                        <div style="display: table-header-group;float:right">
+                            <ul class="nav navbar-nav cart-menu navbar-right">
+                                <li><a href=""><input type="checkbox" ng-model="togl" /><span>Go To Cart -${{TotalPrice}}&nbsp;</span><span class="shoping-cart">{{TotalQuantity}}</span></a></li>
+
+                            </ul>
+                        </div>
+                    </div>-->
+                </div><!-- /.container -->
+            </nav>
+        </header>
+    <div ng-app="app" ng-controller="SlideCtrl">
+        <div higgidy-carousel='images' timeout="10000">
+            <ul higgidy-carousel-images>
+                <li ng-repeat="image in images">
+                    <a href="{{image.link}}">
+                        <img ng-src="{{image.src}}" alt="{{img.alt}}" width="100px" />
+                    </a>
+                </li>
+            </ul>
+            <nav class="links">
+                <ul>
+                    <li ng-repeat="image in images">
+                        <a href="" ng-click="show($index)" ng-class="{selected: carousel.current == $index}">
+                            {{$index}}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!--........................containerBody................-->
+    <div class="container body-content">
+        <form name="form1" novalidate ng-controller="accCtrl">
+            <!---------------------------------- modal for Create Account ---------------------------------->
+            <div class="modal fade" tabindex="-1" id="newAccModal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Create New Account</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <!-------------------------- Name-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form1.Name.$invalid &&
+                                 form1.Name.$dirty}">
+                                    <label for="input2" class="col-sm-2 control-label">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="input2" name="Name" ng-model="current.Name" placeholder="User Name" ng-maxlength="20" ng-minlength="3" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.Name.$error.required">User name is required</span>
+                                            <span ng-show="form1.Name.$error.minlength">User name is must be atleast 4 charecters in length</span>
+                                            <span ng-show="form1.Name.$error.maxlength">User name is can not exceed 20 charecters in length</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- Email-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form1.Email.$invalid &&
+                                 form1.Email.$dirty}">
+                                    <label for="input3" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="input3" name="Email" ng-model="current.Email" placeholder="Email" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.Email.$error.required">Mail address is required</span>
+                                            <span ng-show="form1.Email.$error.email">Invalid email Address</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-------------------------- User Password-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form1.uPassword.$invalid &&
+                                 form1.uPassword.$dirty}">
+                                    <label for="input4" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="input4" name="uPassword" ng-model="current.UserPassword" placeholder="Password" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form1.uPassword.$error.required">Password is required</span>
+                                        </span>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="signUpUser();" ng-disabled="form1.$invalid" data-dismiss="modal">Save</button>
+                            <!---->
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <!---------------------------------- End of modal for Create Account  ---------------------------------->
+        </form>
+        <form name="form2" novalidate ng-controller="accCtrl">
+            <!---------------------------------- modal for Sign In ---------------------------------->
+            <div class="modal fade" tabindex="-1" id="SignInModal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Sign In</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+
+
+                                <!-------------------------- Email-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form2.Email.$invalid &&
+                                  form2.Email.$dirty}">
+                                    <label for="input1" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="input1" name="Email" ng-model="logn.Email" placeholder="Email" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form2.Email.$error.required">Mail address is required</span>
+                                            <span ng-show="form2.Email.$error.email">Invalid email Address</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-------------------------- User Password-------------------------------->
+                                <div class="form-group" ng-class="{'has-error':form2.uPasswordSign.$invalid &&
+                                 form2.uPasswordSign.$dirty}">
+                                    <label for="input2" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control" id="input2" name="uPasswordSign" ng-model="logn.UserPassword" placeholder="Password" required>
+                                        <span class="help-block has-error">
+                                            <span ng-show="form2.uPasswordSign.$error.required">Password is required</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style="color:red">
+                                    {{message}}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-primary" ng-click="login()" ng-disabled="form2.$invalid">Log In</button>
+
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <!---------------------------------- End of modal for Create Account  ---------------------------------->
+        </form>
+        <hr />
+        <!--For Viewing Product-->
+
+        <div ng-view>
+
+        </div>
+        <hr />
+    </div>
+
+    <!--</form>-->
+    
+    <!--..................Offer Section...........-->
+    <section class="offer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 wow fadeInDown animated ">
+                    <h1>END OF SEASON SALE</h1>
+                    <h2>Up to 7.5% off all Medicine</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--....................Client Section................-->
+    
+    <section id="aa-client-brand">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-client-brand-area">
+                        <ul class="aa-client-brand-slider">
+                            <li><a href="#"><img src="images/b-1.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-2.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-3.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-4.gif" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-5.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-6.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-7.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-3.jpg" alt="jquery img"></a></li>
+                            <li><a href="#"><img src="images/b-2.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-6.jpg" alt="Medicine Mart"></a></li>
+                            <li><a href="#"><img src="images/b-7.jpg" alt="Medicine Mart"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--......................News Section..........-->
+    <div id="blog">
+        <section class="news-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="titie-section wow fadeInDown animated ">
+                            <h1>Latest Blogs</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 wow fadeInDown animated" data-wow-delay="0.2s">
+                        <div class="blog-item">
+                            <a href="#"><img src="images/blog1.jpg" width="350" height="262" alt=""></a>
+                            <h3>Cardiology still a man's world, finds survey </h3>
+                            <p>Since 1996, the American College of Cardiology (ACC) have been conducting the Professional Life Survey once every decade.</p>
+                            <a href="#">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 wow fadeInDown animated" data-wow-delay="0.4s">
+                        <div class="blog-item">
+                            <a href="#"><img src="images/blog2.jpg" width="350" height="262" alt=""></a>
+                            <h3>Cardiology still a man's world, finds survey</h3>
+                            <p>Since 1996, the American College of Cardiology (ACC) have been conducting the Professional Life Survey once every decade.</p>
+                            <a href="#">Read More</a>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4 wow fadeInDown animated" data-wow-delay="0.6s">
+                        <div class="blog-item">
+                            <a href="#"><img src="images/blog3.jpg" width="350" height="262" alt=""></a>
+                            <h3>Cardiology still a man's world, finds survey </h3>
+                            <p>Since 1996, the American College of Cardiology (ACC) have been conducting the Professional Life Survey once every decade.</p>
+                            <a href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+        <!--......................Contact Section.............-->
+        <section id="jalalNur" class="contact-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="titie-section wow fadeInDown animated ">
+                            <h1>GET IN TOUCH</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 wow fadeInLeft animated">
+                        <div class="left-content">
+                            <h1><b>M</b><span>Mart</span></h1>
+                            <h3>We'd love To Meet You In Person Or Via The Web!</h3>
+                            <p>Researchers have discovered a new pathway in the liver that opens the door to treat non-alcoholic fatty liver disease, a condition that affects up to 25 percent of the population and may lead to cirrhosis and eventually liver cancer or failure, and likely other liver diseases.</p>
+                            <div class="contact-info">
+                                <p><b>Main Office:</b> PnT, PanthaPath,Dhaka-1205</p>
+                                <p><b>Phone:</b> 01681399787</p>
+                                <p><b>Email:</b> miahjewel22@gmail.com</p>
+                            </div>
+                            <div class="social-media">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 wow fadeInRight animated">
+                        <form action="" method="" class="contact-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="name" placeholder="Your Email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="name" placeholder="Subject">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="name" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <textarea name="" id="" class="form-control" cols="30" rows="5" placeholder="Your Message..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <input type="submit" class="contact-submit" value="Send" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+     <!--.............Footer....................-->
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="center">All Rights Reserved &copy;Medicine Mart | Designed <a href="https://www.facebook.com/" target="_blank">Jewel Miah</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+    
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+
+
+
+    <!--New-->
+
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="Scripts/angular-resource.js"></script>
+    <script src="Scripts/angular-messages.js"></script>
+    <script src="Scripts/angular-cookies.js"></script>
+
+    <script src="Scripts/app/app.js"></script>
+    <script src="Scripts/Controller/routeCtrl.js"></script>
+
+    <script src="Scripts/Factory/accSvc.js"></script>
+    <script src="Scripts/Controller/accCtrl.js"></script>
+
+    <script src="Scripts/Controller/omsCtrl.js"></script>
+    <script src="Scripts/Factory/omsSvc.js"></script>
+
+
+    <script src="Scripts/Controller/SlideCtrl.js"></script>
+
+    <link href="Scripts/slideshow/higgidy_carousel.css" rel="stylesheet" />
+    <script src="Scripts/slideshow/higgidy_carousel.js"></script>
+
+    <script src="Scripts/dirPagination.js"></script>
+    <!--...............Design Jquery..................-->
+    <!--...................Animation.............-->
+
+    <script src="Scripts/isotope.pkgd.min.js"></script>
+    <!--....................Branding Slider...............-->
+
+    <script src="Scripts/slick.js"></script>
+
+    <!--.....................Scroll Animation............-->
+    <script src="Scripts/wow.min.js"></script>
+
+    <!--................Page Scroll.................-->
+    <script src="Scripts/smooth-scroll.js"></script>
+
+    <script src="Scripts/custom.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,242 @@
+﻿<div class="container" ng-init="showProduct();">
+    <p class="text-info">
+        Thanks for shopping at the Angular Store.<br />
+        This is your shopping cart. Here you can edit the items,
+        go back to the store, clear the cart, or check out.
+    </p>
+    <div class="text-center" id="shoppingCart"><h3>Shopping Cart</h3></div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span8">
+                <!-- items -->
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="well">
+                            <td class="tdRight" colspan="6">
+                                <a href="AdminDashBoard.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                                    <i class="icon-shopping-cart" />
+                                    <b>{{TotalQuantity}}</b> items, <b>{{TotalPrice}}</b>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Product Id </th>
+                            <th>Product Name</th>
+                            <th>Sale Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            <th>...</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="s1 in cartItems">
+                        <tr>
+                            <!--ng-click="edit(s)"-->
+                            <td>{{s1.ProductId}}</td>
+                            <td>{{s1.ProductName}}</td>
+                            <td>
+                                <button class="btn btn-inverse" type="button"
+                                        ng-disabled="s1.SaleQuantity<= 1"
+                                        ng-click="Decrement(s1)">
+                                    -
+                                </button>
+                                {{s1.SaleQuantity}}<button class="btn btn-success" type="button"
+                                                           ng-disabled="s1.SaleQuantity>=1000"
+                                                           ng-click="insertCart(s1)">
+                                    +
+                                </button>
+
+                            </td>
+                            <td>{{s1.SalePrice}}</td>
+                            <td>{{s1.mSalePrice}}</td>
+                            <td><a href="" ng-click="removeCart(s1)">Remove</a></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="tdRight">Items</td>
+                            <td>{{TotalQuantity}}</td>
+                            <td class="tdRight">Grand Total</td>
+                            <td>{{TotalPrice}}</td>
+                            <td>&nbsp;</td>
+
+                        </tr>
+
+                    </tfoot>
+                </table>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#orderModal">CheckOut</button>
+                    <button type="button" class="btn btn-block btn-danger" ng-click="" ng-disabled=""><i class="icon-trash icon-white" /> clear cart</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <p class="text-info">
+        Welcome to the Angular Store.<br />
+        Please select the products you want and add them to your shopping cart.<br />
+        When you are done, click the shopping cart icon to review your order and check out.
+    </p>
+    <div class="text-center"><h3>List of all Products</h3></div>
+    <table class="table table-bordered">
+        <tr class="well">
+            <td class="tdRight" colspan="4">
+                <a href="#shoppingCart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                    <i class="icon-shopping-cart" />
+                    <b>{{TotalQuantity}}</b> items, <b>{{TotalPrice}}</b>
+                </a>
+            </td>
+        </tr>
+
+        <tr dir-paginate="product in productView|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+            <td class="tdCenter">
+                <img id="picUpdates" ng-src="data:image/png;base64,{{product.ProductPhoto}}" alt="" width="50" height="50" style="margin-left:10px;" />
+            </td>
+            <td>
+                <!--<a href="#/products/{{product.sku}}"><b>{{product.name}}</b></a><br />{{product.description}}-->
+                <a href="" data-toggle="modal" data-target="#productDetailesModal" ng-click="searchPv();">
+                <b>{{product.ProductId}}</b></a><br />
+                {{product.ProductName}}<br />
+                {{product.GenericName}}
+
+
+            </td>
+
+            <td class="tdRight">
+                {{product.SalePrice | currency}}
+            </td>
+            <td class="tdCenter">
+                <!--<a href="" ng-click="cart.addItem(product.sku, product.name, product.price, 1)">add to cart</a>-->
+                <a href="" ng-click="insertCart(product)">add to cart</a>
+            </td>
+        </tr>
+
+        <tr class="well">
+            <td class="tdRight" colspan="4">
+                <a href="AdminDashBoard.html#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+                    <i class="icon-shopping-cart" />
+                    <b>{{TotalQuantity}}</b> items, <b>{{TotalPrice}}</b>
+                </a>
+            </td>
+        </tr>
+    </table>
+    <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    <!---------------------------------------------------Modal For Customer Add------------------------------------------------------->
+
+    <div class="modal fade" tabindex="-1" id="orderModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Give Us Your Information</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <!-------------------------- Name(Add)  ------------------------->
+                        <div class="form-group">
+                            <label for="input1" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="input1" name="CustomerName" ng-model="order.CustomerName" placeholder="Customer Name" required>
+                                <div ng-show="form1.$submitted || form1.CustomerName.$invalid">
+                                    <div ng-show="form1.CustomerName.$error.required">
+                                        Name is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-------------------------- Address(Add)  ------------------------->
+                        <div class="form-group">
+                            <label for="input2" class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="input2" name="CustomerAddress" ng-model="order.CustomerAddress" placeholder="Customer Address" required>
+                                <div ng-show="form1.$submitted || form1.CustomerAddress.$invalid">
+                                    <div ng-show="form1.CustomerAddress.$error.required">
+                                        Address is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-------------------------- Phone(Add)  ------------------------->
+                        <div class="form-group">
+                            <label for="input3" class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="input3" name="CustomerPhone" ng-model="order.CustomerPhone" placeholder="Customer Phone" required>
+                                <div ng-show="form1.$submitted || form1.CustomerPhone.$invalid">
+                                    <div ng-show="form1.CustomerPhone.$error.required">
+                                        Phone is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--------------------------  Email(Add)  ------------------------->
+                        <div class="form-group">
+                            <label for="input4" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="input4" name="CustomerEmail" ng-model="order.CustomerEmail" placeholder="Customer Email" required>
+                                <div ng-show="form1.$submitted || form1.CustomerEmail.$invalid">
+                                    <div ng-show="form1.CustomerEmail.$error.required">
+                                        Email is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveOrderDetail();">Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <!-----------------Modal For Single Product------------------------>
+
+    <div class="modal fade" tabindex="-1" id="productDetailesModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Product Information</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div>
+
+
+
+
+                            <span>ProductId :{{productv.ProductId}}</span><br />
+                            <span>productViewchaseQuantity :{{productv.productViewchaseQuantity}}</span><br />
+                            <span>ReorderLevel :{{productv.ReorderLevel}}</span><br />
+                            <span>BoxPrice :{{productv.BoxPrice}}</span><br />
+                            <span>StripOrVialPerBox :{{productv.StripOrVialPerBox}}</span><br />
+                            <span>UnitPrice :{{productv.UnitPrice}}</span><br />
+                            <span>Comission :{{productv.Comission}}</span><br />
+                            <span>SalePrice :{{productv.SalePrice}}</span><br />
+                            <span>Company Name :{{productv.CompanyName}}</span><br />
+                            <span>DosageFormat Name :{{productv.DosageFormatName}}</span><br />
+                            <span>Product Name :{{productv.ProductName}}</span><br />
+                            <span>Generic Name :{{productv.GenericName}}</span><br />
+                            <span>MedicineUnit :{{productv.MedicineUnit}}</span><br />
+                            <span>Producspanescription :{{productv.Producspanescription}}</span><br />
+                            <span>PiecePerStrip :{{productv.PiecePerStrip}}</span><br />
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+
+</div>

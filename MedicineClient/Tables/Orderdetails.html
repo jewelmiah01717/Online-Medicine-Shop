@@ -1,0 +1,37 @@
+﻿<form name="form1">
+    <div ng-init="getallOrderDetail();">
+        <p>
+            <strong>Search By Any:</strong>
+            <input type="text" id="txtAny" ng-model="searchAny" placeholder="Search by any field" />
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="cursor:pointer" ng-click="predicate='OrderDetailId';reverse=!reverse">Order Detail Id</th>
+                    <th style="cursor:pointer" ng-click="predicate='ProductId';reverse=!reverse">ProductId</th>
+                    <th style="cursor:pointer" ng-click="predicate='SalePrice';reverse=!reverse">SalePrice</th>
+                    <th style="cursor:pointer" ng-click="predicate='SaleQuantity';reverse=!reverse">SaleQuantity</th>
+                    <th style="cursor:pointer" ng-click="predicate='TotalSale';reverse=!reverse">Total Sale</th>
+                    <th style="cursor:pointer" ng-click="predicate='OrderId';reverse=!reverse">OrderId</th>
+                    
+                </tr>
+            </thead>
+            <tbody dir-paginate="ordtls in orderDetails|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+                <tr>
+                    <td>{{ordtls.OrderDetailId}}</td>
+                    <td>{{ordtls.ProductId}}</td>
+                    <td>{{ordtls.SalePrice}}</td>
+                    <td>{{ordtls.SaleQuantity}}</td>
+                    <td>{{ordtls.TotalSale}}</td>
+                    <td>{{ordtls.OrderId}}</td>
+                    
+                </tr>
+            </tbody>
+            <tfoot>
+               
+            </tfoot>
+        </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        
+    </div>
+</form>

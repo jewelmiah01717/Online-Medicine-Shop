@@ -1,0 +1,41 @@
+﻿<form name="form1">
+    <div ng-init="getallOrder();">
+        <p>
+            <strong>Search By Any:</strong>
+            <input type="text" id="txtAny" ng-model="searchAny" placeholder="Search by any field" />
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="cursor:pointer" ng-click="predicate='OrderId';reverse=!reverse">Order Id</th>
+                    <th style="cursor:pointer" ng-click="predicate='OrderDate';reverse=!reverse">Order Date</th>
+                    <th style="cursor:pointer" ng-click="predicate='GrandTotal';reverse=!reverse">Grand Total</th>
+                    <th style="cursor:pointer" ng-click="predicate='GrandTotalItem';reverse=!reverse">Grand Total Item</th>
+                   <th style="cursor:pointer" ng-click="predicate='CustomerName';reverse=!reverse">Customer Name</th>
+                    <th style="cursor:pointer" ng-click="predicate='CustomerAddress';reverse=!reverse">Customer Address</th>
+                    <th style="cursor:pointer" ng-click="predicate='CustomerPhone';reverse=!reverse">Customer Phone</th>
+                    <th style="cursor:pointer" ng-click="predicate='CustomerEmail';reverse=!reverse">Customer Email</th>
+                   
+                </tr>
+            </thead>
+            <tbody dir-paginate="ordrs in orders|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+                <tr>
+                    <td>{{ordrs.OrderId}}</td>
+                    <td>{{ordrs.OrderDate}}</td>
+                    <td>{{ordrs.GrandTotal}}</td>
+                    <td>{{ordrs.GrandTotalItem}}</td>
+                    <td>{{ordrs.CustomerName}}</td>
+                    <td>{{ordrs.CustomerAddress}}</td>
+                    <td>{{ordrs.CustomerPhone}}</td>
+                    <td>{{ordrs.CustomerEmail}}</td>
+                    
+                </tr>
+            </tbody>
+            <tfoot>
+                
+                    
+            </tfoot>
+        </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+</form>

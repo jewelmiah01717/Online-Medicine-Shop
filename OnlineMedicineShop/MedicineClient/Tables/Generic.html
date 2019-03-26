@@ -1,0 +1,109 @@
+﻿<form name="form1">
+    <div class="container" ng-init="getallGenericName();">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+            Add new Generic Name
+        </button>
+        <br />
+        <br />
+        <p>
+            <strong>Search By Any:</strong>
+            <input type="text" id="txtAny" ng-model="searchAny" placeholder="Search by any field" />
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <!--<th style="cursor:pointer" ng-click="predicate='GenericId';reverse=!reverse">Generic Id</th>-->
+                    <th style="cursor:pointer" ng-click="predicate='GenericName';reverse=!reverse">Generic Name</th>
+                    <th>...</th>
+                </tr>
+            </thead>
+            <tbody dir-paginate="gen in genericNames|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+                <tr>
+                    <!--<td>{{gen.GenericId}}</td>-->
+                    <td>{{gen.GenericName}}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" ng-click="searchGenericName();" data-target="#myModalEdit">Edit</button>
+                        <button type="button" class="btn btn-success btn-sm" ng-click="deleteGenericName();">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <!--<td>&nbsp;</td>-->
+                </tr>
+            </tfoot>
+        </table>
+        <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        <!--Use of Modal(Pop up Dialogue box) for Add New Data-->
+        <!---------------------------------- modal for Add ---------------------------------->
+        <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Save GenericName</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <!-------------------------- Name(Add)  ------------------------->
+                            <div class="form-group">
+                                <label for="input2" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input2" name="GenericName" ng-model="generic.GenericName" placeholder="Generic Name" required>
+                                    <div ng-show="form1.$submitted || form1.GenericName.$invalid">
+                                        <div ng-show="form1.GenericName.$error.required">
+                                            Name is required
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="saveGenericName();">Save</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!--Modal for edit-->
+        <!---------------------------------- modal for edit ---------------------------------->
+        <div class="modal fade" tabindex="-1" id="myModalEdit" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <!--<p>One fine body&hellip;</p>-->
+                        <div class="form-horizontal">
+                            <!-------------------------- Name(Edit)  ------------------------->
+
+                            <!--<div class="form-group">
+                                <label for="input1" class="col-sm-2 control-label">Id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input1" ng-model="generic.GenericId" placeholder="Generic Id">
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label for="input2" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input2" ng-model="generic.GenericName" placeholder="Generic Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateGenericName();">Update</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
+
+    </div>
+</form>

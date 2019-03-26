@@ -1,0 +1,153 @@
+﻿<div ng-init="showSalesDetail();">
+    <h3>Sales View</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+
+                <th style="cursor:pointer" ng-click="predicate='OrderId';reverse=!reverse">Order Id</th>
+                <th style="cursor:pointer" ng-click="predicate='OrderDetailId';reverse=!reverse">OrderDetail Id</th>
+                <th style="cursor:pointer" ng-click="predicate='SalePrice';reverse=!reverse">Sale Price</th>
+                <th style="cursor:pointer" ng-click="predicate='SaleQuantity';reverse=!reverse">Sale Quantity</th>
+                <th style="cursor:pointer" ng-click="predicate='TotalSale';reverse=!reverse">Total Sale</th>
+                <th style="cursor:pointer" ng-click="predicate='ProductId';reverse=!reverse">Product Id</th>
+                <th style="cursor:pointer" ng-click="predicate='OrderDate';reverse=!reverse">Order Date</th>
+                <th style="cursor:pointer" ng-click="predicate='GrandTotal';reverse=!reverse">GrandTotal</th>
+                <th style="cursor:pointer" ng-click="predicate='GrandTotalItem';reverse=!reverse">Grand Total Item</th>
+                <th style="cursor:pointer" ng-click="predicate='CustomerName';reverse=!reverse">Customer Name</th>
+                <th style="cursor:pointer" ng-click="predicate='CustomerAddress';reverse=!reverse">Customer Address</th>
+                <th style="cursor:pointer" ng-click="predicate='CustomerEmail';reverse=!reverse">Customer Email</th>
+                <th style="cursor:pointer" ng-click="predicate='CustomerPhone';reverse=!reverse">Customer Phone</th>
+                <th style="cursor:pointer" ng-click="predicate='';reverse=!reverse">...</th>
+            </tr>
+        </thead>
+        <tbody dir-paginate="sldtls in totalSalesView|filter:search|filter:searchAny|orderBy:predicate:reverse|itemsPerPage:3">
+            <tr>
+
+                <td>{{sldtls.OrderId}}</td>
+                <td>{{sldtls.OrderDetailId}}</td>
+                <td>{{sldtls.SalePrice}}</td>
+                <td>{{sldtls.SaleQuantity}}</td>
+                <td>{{sldtls.TotalSale}}</td>
+                <td>{{sldtls.ProductId}}</td>
+                <td>{{sldtls.OrderDate}}</td>
+                <td>{{sldtls.GrandTotal}}</td>
+                <td>{{sldtls.GrandTotalItem}}</td>
+                <td>{{sldtls.CustomerName}}</td>
+                <td>{{sldtls.CustomerAddress}}</td>
+                <td>{{sldtls.CustomerEmail}}</td>
+                <td>{{sldtls.CustomerPhone}}</td>
+                <td>
+                    <button type="button" class="btn btn-success glyphicon glyphicon-print" data-toggle="modal" ng-click="showSalesDetailById(sldtls.OrderId);" data-target="#myModal"></button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </tfoot>
+    </table>
+    <dir-pagination-controls max-size="3" direction-links="true" boundary-links="true"></dir-pagination-controls>
+
+    <!--------------------Model for Cash Memo----------------->
+    <div class="modal fade" tabindex="-1" id="myModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div id="printable">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title text-center">Cash Memo</h3>
+                        <h2><b style="color:#197da9">M-</b>Mart</h2>
+                        <pre>
+Online Medicine Shop
+Phone:+8801681399787
+E-mail:m_mart@gmail.com
+
+</pre>
+           </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+
+
+                            <table ng-init="showSalesDetailById();" class="table fa-border">
+
+                                <tr>
+
+                                    <th>Order Id</th>
+                                    <td class="text-left"> {{totalSalesViewbyId[0].OrderId}}</td>
+                                    <th class="text-right">Order Date</th>
+                                    <td class="text-left">{{totalSalesViewbyId[0].OrderDate |date:'dd/MM/yyyy'}}</td>
+                                </tr>
+                                <tr>
+                                    <td> Name</td>
+                                    <td> {{totalSalesViewbyId[0].CustomerName}}</td>
+                                    <td class="text-right"> Email</td>
+                                    <td> {{totalSalesViewbyId[0].CustomerEmail}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td> {{totalSalesViewbyId[0].CustomerAddress}}</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td> {{totalSalesViewbyId[0].CustomerPhone}}</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <div>
+                                <table class="table fa-border">
+                                    <tr>
+                                        <th>OrderDetail Id</th>
+                                        <th class="text-right">Unit Price</th>
+                                        <th class="text-right">SaleQuantity</th>
+                                        <th class="text-right">Total Price</th>
+                                    </tr>
+                                    <tr ng-repeat="sldtls in totalSalesViewbyId">
+
+                                        <td class="text-center">{{sldtls.OrderDetailId}}</td>
+
+                                        <td class="text-center">{{sldtls.SalePrice}}</td>
+
+                                        <td class="text-right">{{sldtls.SaleQuantity}}</td>
+
+                                        <td class="text-right">{{sldtls.TotalSale}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td class="text-right">
+
+                                            Grand Total Item  {{totalSalesViewbyId[0].GrandTotalItem}}
+                                        </td>
+                                        <td class="text-right">  Grand Total Price {{totalSalesViewbyId[0].GrandTotal}}</td>
+                                    </tr>
+                                    
+                                        
+                                    
+                                </table>
+                                <pre>
+-----------------------------
+Signatured by                                                                        
+{{totalSalesViewbyId[0].CustomerName}}                                                   Jalal
+Thanks for shoping                                    Oparation Manager
+                                                    -------------------
+                                                       M-Mart.com
+</pre>                                                                                  
+                            </div>
+
+                            <div class="form-group">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger glyphicon glyphicon-remove" data-dismiss="modal"></button>
+                    <button type="button" class="btn btn-primary glyphicon glyphicon-print" ng-click="printDiv('printable');">Print</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+</div>
